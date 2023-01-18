@@ -1,0 +1,71 @@
+{
+  "name": "vue-prev-admin",
+  "version": "1.2.1",
+  "private": true,
+  "description": "vue2 webpack admin template",
+  "author": "lyt_20201208",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "webpack": "webpack --version"
+  },
+  "dependencies": {
+    "axios": "0.24.0",
+    "clipboard": "2.0.8",
+    "countup.js": "2.0.8",
+    "echarts": "5.2.2",
+    "element-ui": "2.15.6",
+    "nprogress": "0.2.0",
+    "screenfull": "5.2.0",
+    "sign-canvas": "1.1.4",
+    "vue": "2.6.14",
+    "vue-i18n": "8.26.7",
+    "vue-particles": "1.0.9",
+    "vue-router": "3.5.3",
+    "vue-seamless-scroll": "1.1.23",
+    "vuex": "3.6.2"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "7.16.5",
+    "@babel/plugin-proposal-optional-chaining": "7.17.12",
+    "@vue/cli-plugin-babel": "4.5.15",
+    "@vue/cli-plugin-eslint": "4.5.15",
+    "@vue/cli-plugin-router": "4.5.15",
+    "@vue/cli-plugin-vuex": "4.5.15",
+    "@vue/cli-service": "4.5.15",
+    "core-js": "^3.27.1",
+    "eslint": "7.0.0",
+    "eslint-plugin-vue": "8.2.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "sass": "1.45.0",
+    "sass-loader": "10.1.1",
+    "vue-template-compiler": "2.6.14"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "bugs": {
+    "url": "https://gitee.com/lyt-top/vue-next-admin/issues"
+  },
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "vuejs/vue-next",
+    "element-ui",
+    "element-plus",
+    "vue-next-admin",
+    "next-admin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/lyt-top/vue-next-admin.git"
+  }
+}
