@@ -14,35 +14,33 @@ import request from '@/utils/request';
  * 后端控制菜单模拟json，路径在 https://gitee.com/lyt-top/vue-next-admin-images/tree/master/menu
  * 后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
  * @method getMenuAdmin 获取后端动态路由菜单(admin)
- * @method getMenuTest 获取后端动态路由菜单(test)
  */
 export function useMenuApi() {
 	return {
-		getMenuAdmin: (params) => {
-			// 本地数据，路径：`/public/xxx.json`
+		getRouterMenu: () => {
 			return request({
-				url: './admin.json',
-				method: 'get',
-				params,
+				url: '/sys/user/sysInfo',
+				method: 'get'
 			});
+
+			// 本地数据，路径：`/public/xxx.json`
+			// return request({
+			// 	url: './admin.json',
+			// 	method: 'get',
+			// 	params,
+			// });
 			// 模拟跨域
 			// return request({
 			// 	url: '/gitee/lyt-top/vue-next-admin-images/raw/master/vue2/admin.json',
 			// 	method: 'get',
 			// });
 		},
-		getMenuTest: (params) => {
-			// 本地数据，路径：`/public/xxx.json`
+		list: (params) => {
 			return request({
-				url: './test.json',
+				url: '/sys/menu/list',
 				method: 'get',
-				params,
+				params
 			});
-			// 模拟跨域
-			// return request({
-			// 	url: '/gitee/lyt-top/vue-next-admin-images/raw/master/vue2/test.json',
-			// 	method: 'get',
-			// });
-		},
+		}
 	};
 }

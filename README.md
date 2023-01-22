@@ -1,3 +1,6 @@
+<h1> x-springboot-ui </h1>
+
+#### 📚 后台地址  https://github.com/yzcheng90/X-SpringBoot
 
 #### 🚧 安装 cnpm、yarn
 
@@ -24,6 +27,12 @@ git checkout vue-prev-admin
 cnpm install
 cnpm install eslint-webpack-plugin --save-dev
 cnpm install core-js --save-dev
+npm install element-plus --save-dev
+npm install --save @vue/composition-api
+npm install --save @vue/shared 
+npm install --save @vue/reactivity
+
+
 
 # 运行项目
 cnpm run dev

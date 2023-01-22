@@ -21,12 +21,12 @@
 				<div class="login-main">
 					<h4 class="login-title">{{ getThemeConfig.globalTitle }}</h4>
 					<el-form class="el-form login-form">
-						<el-form-item style="margin-left: 0px" prop="userName">
+						<el-form-item style="margin-left: 0px" prop="username">
 							<el-input
 								type="text"
 								:placeholder="$t('message.login.placeholder1')"
 								prefix-icon="el-icon-user"
-								v-model="ruleForm.userName"
+								v-model="ruleForm.username"
 								clearable
 								autocomplete="off"
 							>
@@ -43,22 +43,22 @@
 							>
 							</el-input>
 						</el-form-item>
-						<el-form-item style="margin-left: 0px" prop="code">
+						<el-form-item style="margin-left: 0px" prop="captcha">
 							<div class="el-row" span="24">
-								<div class="el-col el-col-16">
+								<div class="el-col el-col-14">
 									<el-input
 										type="text"
-										maxlength="4"
+										maxlength="5"
 										:placeholder="$t('message.login.placeholder3')"
 										prefix-icon="el-icon-position"
-										v-model="ruleForm.code"
+										v-model="ruleForm.captcha"
 										clearable
 										autocomplete="off"
 									></el-input>
 								</div>
-								<div class="el-col el-col-8">
-									<div class="login-code">
-										<span class="login-code-img">1234</span>
+								<div class="el-col el-col-10">
+									<div class="login-code" @click="getIdentifyingCode(true)">
+                    <img id="imgIdentifyingCode" class="login-code-img" alt="点击更换" title="点击更换">
 									</div>
 								</div>
 							</div>
@@ -87,6 +87,8 @@ import { Session } from '@/utils/storage';
 import { formatDate, formatAxis } from '@/utils/formatTime';
 import { PrevLoading } from '@/utils/loading.js';
 import { quotationsList } from './mock';
+import { useLoginApi } from '@/api/login';
+
 export default {
 	name: 'login',
 	data() {
@@ -98,9 +100,10 @@ export default {
 				loading: false,
 			},
 			ruleForm: {
-				userName: 'admin',
-				password: '123456',
-				code: '1234',
+				username: 'admin',
+				password: 'admin',
+        captcha: '',
+        randomStr: Math.floor(Math.random() * 999999999)
 			},
 			time: {
 				txt: '',
@@ -123,8 +126,22 @@ export default {
 	},
 	mounted() {
 		this.initRandomQuotations();
+    this.getRandomStr()
+    this.getIdentifyingCode(true)
 	},
 	methods: {
+    getRandomStr() {
+      this.ruleForm.randomStr = Math.floor(Math.random() * 999999999)
+    },
+    getIdentifyingCode(bRefresh) {
+      let identifyCodeSrc = 'sys/code/' + this.ruleForm.randomStr
+      if (bRefresh) {
+        this.getRandomStr()
+        identifyCodeSrc = 'sys/code/' + this.ruleForm.randomStr
+      }
+      const objs = document.getElementById('imgIdentifyingCode')
+      objs.src = identifyCodeSrc
+    },
 		// 随机语录
 		initRandomQuotations() {
 			this.quotations = this.quotationsList[Math.floor(Math.random() * this.quotationsList.length)];
@@ -139,46 +156,16 @@ export default {
 		// 登录按钮点击
 		submitForm() {
 			this.submit.loading = true;
-			setTimeout(() => {
-				let defaultRoles = [];
-				let defaultAuthBtnList = [];
-				// admin 页面权限标识，对应路由 meta.roles
-				let adminRoles = ['admin'];
-				// admin 按钮权限标识
-				let adminAuthBtnList = ['btn.add', 'btn.del', 'btn.edit', 'btn.link'];
-				// common 页面权限标识，对应路由 meta.roles
-				let testAuthPageList = ['common'];
-				// test 按钮权限标识
-				let testAuthBtnList = ['btn.add', 'btn.link'];
-				if (this.ruleForm.userName === 'admin') {
-					defaultRoles = adminRoles;
-					defaultAuthBtnList = adminAuthBtnList;
-				} else {
-					defaultRoles = testAuthPageList;
-					defaultAuthBtnList = testAuthBtnList;
-				}
-				const userInfos = {
-					userName: this.ruleForm.userName === 'admin' ? 'admin' : 'test',
-					photo:
-						this.ruleForm.userName === 'admin'
-							? 'https://img0.baidu.com/it/u=1833472230,3849481738&fm=253&fmt=auto?w=200&h=200'
-							: 'https://img2.baidu.com/it/u=2187913762,2708298335&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200',
-					time: new Date().getTime(),
-					roles: defaultRoles,
-					authBtnList: defaultAuthBtnList,
-				};
-				// 存储 token 到浏览器缓存
-				Session.set('token', Math.random().toString(36).substr(0));
-				// 存储用户信息到浏览器缓存
-				Session.set('userInfo', userInfos);
-				// 存储用户信息到vuex
-				this.$store.dispatch('userInfos/setUserInfos', userInfos);
-				PrevLoading.start();
-				this.$router.push('/');
-				setTimeout(() => {
-					this.$message.success(`${this.currentTime}，${this.$t('message.login.signInText')}`);
-				}, 300);
-			}, 300);
+      useLoginApi().signIn(this.ruleForm).then((res) => {
+        // eslint-disable-next-line no-console
+        this.$message.success(`${this.currentTime}，${this.$t('message.login.signInText')}`);
+        // 存储 token 到浏览器缓存
+        Session.set('token', res.token);
+        PrevLoading.start();
+        this.$router.push('/');
+      }).catch(() => {
+        this.submit.loading = false
+      })
 		},
 	},
 	destroyed() {
@@ -299,7 +286,7 @@ export default {
 							user-select: none;
 							.login-code-img {
 								margin-top: 2px;
-								width: 100px;
+								width: 120px;
 								height: 38px;
 								border: 1px solid var(--prev-border-color-base);
 								color: var(--prev-color-text-primary);

@@ -16,7 +16,7 @@ service.interceptors.request.use(
 	(config) => {
 		// 在发送请求之前做些什么 token
 		if (Session.get('token')) {
-			config.headers.common['Authorization'] = `${Session.get('token')}`;
+			config.headers['token'] = `${Session.get('token')}`;
 		}
 		return config;
 	},
@@ -33,7 +33,7 @@ service.interceptors.response.use(
 		const res = response.data;
 		if (res.code && res.code !== 0) {
 			// `token` 过期或者账号已在别处登录
-			if (res.code === 401 || res.code === 4001) {
+			if (res.code === 401) {
 				// 清除浏览器全部临时缓存
 				Session.clear();
 				router.push('/login');
@@ -42,6 +42,10 @@ service.interceptors.response.use(
 				MessageBox.alert('你已被登出，请重新登录', '提示', {})
 					.then(() => {})
 					.catch(() => {});
+			}else if(res.code === 500){
+				Message.error(res.msg);
+			}else {
+				Message.error("请求code 错误");
 			}
 			return Promise.reject(service.interceptors.response.error);
 		} else {

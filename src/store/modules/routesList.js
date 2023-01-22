@@ -12,6 +12,8 @@ const routesListModule = {
 	actions: {
 		// 设置路由，菜单中使用到
 		async setRoutesList({ commit }, data) {
+			// eslint-disable-next-line no-console
+			console.log("设置路由，菜单中使用到")
 			commit('getRoutesList', data);
 		},
 	},

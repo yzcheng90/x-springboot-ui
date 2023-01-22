@@ -11,8 +11,8 @@ export default {
 		},
 		signInText: 'welcome back!',
 		copyright: {
-			one5: 'Copyright: Shenzhen XXX Software Technology Co., Ltd',
-			two6: 'Copyright: Shenzhen XXX software technology Guangdong ICP preparation no.05010000',
+			one5: 'Copyright: XXX Software Technology Co., Ltd',
+			two6: 'Copyright: XXX software technology ICP preparation no.xxxx',
 		},
 	},
 };

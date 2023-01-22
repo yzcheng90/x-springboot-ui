@@ -179,38 +179,24 @@ export function dynamicRouter(routes) {
 export function adminUser(router, to, next) {
 	resetRouter();
 	menuApi
-		.getMenuAdmin()
+		.getRouterMenu()
 		.then(async (res) => {
-			// 读取用户信息，获取对应权限进行判断
-			store.dispatch('userInfos/setUserInfos');
-			store.dispatch('routesList/setRoutesList', setFilterMenuFun(res.data, store.state.userInfos.userInfos.roles));
-			dynamicRoutes[0].children = res.data;
-			const awaitRoute = await dynamicRouter(dynamicRoutes);
-			[...awaitRoute, { path: '*', redirect: '/404' }].forEach((route) => {
-				router.addRoute({ ...route });
-			});
-			setCacheTagsViewRoutes(JSON.parse(JSON.stringify(res.data)));
-			next({ ...to, replace: true });
-		})
-		.catch(() => {});
-}
+			// eslint-disable-next-line no-console
+			console.log("后台请求路由进行加载")
 
-// 添加路由，模拟数据与方法，可自行进行修改 test
-// 添加动态路由，`{ path: '*', redirect: '/404' }` 防止页面刷新，静态路由丢失问题
-export function testUser(router, to, next) {
-	resetRouter();
-	menuApi
-		.getMenuTest()
-		.then(async (res) => {
-			// 读取用户信息，获取对应权限进行判断
-			store.dispatch('userInfos/setUserInfos');
-			store.dispatch('routesList/setRoutesList', setFilterMenuFun(res.data, store.state.userInfos.userInfos.roles));
-			dynamicRoutes[0].children = res.data;
+			// 存储用户信息到浏览器缓存
+			Session.set('userInfo', res.data.userInfo);
+			// 存储用户信息到vuex
+			store.dispatch('userInfos/setUserInfos', res.data.userInfo);
+			// 保存路由信息
+			store.dispatch('routesList/setRoutesList', res.data.menus);
+
+			dynamicRoutes[0].children = res.data.menus;
 			const awaitRoute = await dynamicRouter(dynamicRoutes);
 			[...awaitRoute, { path: '*', redirect: '/404' }].forEach((route) => {
 				router.addRoute({ ...route });
 			});
-			setCacheTagsViewRoutes(JSON.parse(JSON.stringify(res.data)));
+			setCacheTagsViewRoutes(JSON.parse(JSON.stringify(res.data.menus)));
 			next({ ...to, replace: true });
 		})
 		.catch(() => {});
@@ -230,9 +216,9 @@ export function delayNProgressDone(time = 300) {
 
 // 动态加载后端返回路由路由(模拟数据)
 export function getRouterList(router, to, next) {
-	if (!Session.get('userInfo')) return false;
-	if (Session.get('userInfo').userName === 'admin') adminUser(router, to, next);
-	else if (Session.get('userInfo').userName === 'test') testUser(router, to, next);
+	// eslint-disable-next-line no-console
+	console.log("开始加载路由：getRouterList")
+	adminUser(router, to, next);
 }
 
 // 路由加载前

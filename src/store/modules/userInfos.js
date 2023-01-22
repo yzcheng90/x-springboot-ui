@@ -6,14 +6,18 @@ const userInfosModule = {
 		userInfos: {},
 	},
 	mutations: {
-		// 设置用户信息
+		// 获取用户信息
 		getUserInfos(state, data) {
+			// eslint-disable-next-line no-console
+			console.log("获取用户信息")
 			state.userInfos = data;
 		},
 	},
 	actions: {
 		// 设置用户信息
 		async setUserInfos({ commit }, data) {
+			// eslint-disable-next-line no-console
+			console.log("设置用户信息")
 			if (data) {
 				commit('getUserInfos', data);
 			} else {

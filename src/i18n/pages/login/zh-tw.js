@@ -11,8 +11,8 @@ export default {
 		},
 		signInText: '歡迎回來！',
 		copyright: {
-			one5: '版權所有：深圳市xxx軟件科技有限公司',
-			two6: 'Copyright: Shenzhen XXX Software Technology 粵ICP備05010000號',
+			one5: '版權所有：xxx軟件科技有限公司',
+			two6: 'Copyright: XXX Software Technology 粵ICP備xxxx號',
 		},
 	},
 };

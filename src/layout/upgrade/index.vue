@@ -72,7 +72,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.delayShow();
+		// this.delayShow();
 		setTimeout(() => {
 			this.btnTxt = this.$t('message.upgrade.btnTwo');
 		}, 200);

@@ -1,7 +1,7 @@
 // 定义内容
 export default {
 	login: {
-		placeholder1: '用户名 admin 或不输均为 test',
+		placeholder1: '用户名 admin',
 		placeholder2: '密码：123456',
 		placeholder3: '请输入验证码',
 		btnText: '登 录',
@@ -11,8 +11,8 @@ export default {
 		},
 		signInText: '欢迎回来！',
 		copyright: {
-			one5: '版权所有：深圳市xxx软件科技有限公司',
-			two6: 'Copyright: Shenzhen XXX Software Technology 粤ICP备05010000号',
+			one5: '版权所有：xxx软件科技有限公司',
+			two6: 'Copyright: XXX Software Technology 粤ICP备xxx号',
 		},
 	},
 };

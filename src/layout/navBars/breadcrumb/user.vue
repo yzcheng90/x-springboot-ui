@@ -70,6 +70,9 @@ import screenfull from 'screenfull';
 import { Session, Local } from '@/utils/storage.js';
 import UserNews from '@/layout/navBars/breadcrumb/userNews.vue';
 import Search from '@/layout/navBars/breadcrumb/search.vue';
+import { useLoginApi } from '@/api/login';
+import {Message} from "element-ui";
+
 export default {
 	name: 'layoutBreadcrumbUser',
 	components: { UserNews, Search },
@@ -175,44 +178,44 @@ export default {
 		// `dropdown 下拉菜单` 当前项点击
 		onDropdownCommand(path) {
 			if (path === 'logOut') {
-				setTimeout(() => {
-					this.$msgbox({
-						closeOnClickModal: false,
-						closeOnPressEscape: false,
-						title: this.$t('message.user.logOutTitle'),
-						message: this.$t('message.user.logOutMessage'),
-						showCancelButton: true,
-						confirmButtonText: this.$t('message.user.logOutConfirm'),
-						cancelButtonText: this.$t('message.user.logOutCancel'),
-						beforeClose: (action, instance, done) => {
-							if (action === 'confirm') {
-								instance.confirmButtonLoading = true;
-								instance.confirmButtonText = this.$t('message.user.logOutExit');
-								setTimeout(() => {
-									done();
-									setTimeout(() => {
-										instance.confirmButtonLoading = false;
-									}, 300);
-								}, 700);
-							} else {
-								done();
-							}
-						},
-					})
-						.then(() => {
-							// 清除缓存/token等
-							Session.clear();
-							// 使用 reload 时，不需要调用 resetRoute() 重置路由
-							window.location.reload();
-						})
-						.catch(() => {});
-				}, 150);
+        this.$msgbox({
+          closeOnClickModal: false,
+          closeOnPressEscape: false,
+          title: this.$t('message.user.logOutTitle'),
+          message: this.$t('message.user.logOutMessage'),
+          showCancelButton: true,
+          confirmButtonText: this.$t('message.user.logOutConfirm'),
+          cancelButtonText: this.$t('message.user.logOutCancel'),
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = this.$t('message.user.logOutExit');
+              this.userLogout();
+              done();
+              instance.confirmButtonLoading = false;
+            } else {
+              done();
+            }
+          },
+        }).then(() => {
+
+        }).catch(() => {});
 			} else if (path === 'wareHouse') {
-				window.open('https://gitee.com/lyt-top/vue-next-admin');
+				window.open('https://github.com/yzcheng90/x-springboot');
 			} else {
 				this.$router.push(path);
 			}
 		},
+    userLogout(){
+      useLoginApi().signOut().then(response => {
+        // 清除缓存/token等
+        Session.clear();
+        // 使用 reload 时，不需要调用 resetRoute() 重置路由
+        window.location.reload();
+      }).catch(() => {
+
+      })
+    }
 	},
 };
 </script>

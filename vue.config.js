@@ -1,21 +1,24 @@
+const url = 'http://localhost:8080'
 module.exports = {
+	publicPath: './',
+	outputDir: 'ui',
+	assetsDir: 'static',
 	productionSourceMap: false,
-	publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
 	lintOnSave: false,
 	devServer: {
-		open: process.env.VUE_APP_OPEN === 'false' ? false : true, // 自动打开浏览器
-		host: '0.0.0.0', // 真机模拟，使用
-		port: process.env.VUE_APP_PORT, // 前台代理端口号
+		open: false, // 自动打开浏览器
+		port: 9999, // 前台代理端口号
 		https: false, // https： {type: Booleam}
 		hotOnly: false, // 热更新
 		proxy: {
 			// 设置代理
-			'/gitee': {
-				target: 'https://gitee.com',
-				ws: true,
+			'/': {
+				target: url,
+				ws: false,
+				secure: false,
 				changeOrigin: true,
 				pathRewrite: {
-					'^/gitee': '',
+					'^/': '',
 				},
 			},
 		},

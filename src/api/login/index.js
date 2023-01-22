@@ -9,16 +9,15 @@ export function useLoginApi() {
 	return {
 		signIn: (params) => {
 			return request({
-				url: '/user/signIn',
+				url: '/token/login',
 				method: 'post',
-				data: params,
+				params: params
 			});
 		},
-		signOut: (params) => {
+		signOut: () => {
 			return request({
-				url: '/user/signOut',
-				method: 'post',
-				data: params,
+				url: '/token/logout',
+				method: 'post'
 			});
 		},
 	};

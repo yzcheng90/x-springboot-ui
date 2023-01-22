@@ -94,9 +94,9 @@ const themeConfigModule = {
 			 * 全局网站标题 / 副标题
 			 */
 			// 网站主标题（菜单导航、浏览器当前网页标题）
-			globalTitle: 'vue-prev-admin',
+			globalTitle: '后台管理系统',
 			// 网站副标题（登录页顶部文字）
-			globalViceTitle: 'SMALL@小柒',
+			globalViceTitle: '任务分发平台',
 			// 网站描述（登录页顶部文字）
 			globalViceDes: 'vue2.x后台管理系统免费开源模板',
 			// 默认初始语言，可选值"<zh-cn|en|zh-tw>"，默认 zh-cn

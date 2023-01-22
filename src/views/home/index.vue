@@ -153,7 +153,7 @@ import * as echarts from 'echarts';
 import Scroll from 'vue-seamless-scroll';
 import { CountUp } from 'countup.js';
 import { Session } from '@/utils/storage';
-import { formatAxis, formatDate } from '@/utils/formatTime';
+import { formatAxis } from '@/utils/formatTime';
 import { recommendList, chartsRightList, newsInfoList, dailyMessage } from './mock';
 export default {
 	name: 'home',
@@ -362,9 +362,10 @@ export default {
 		},
 		// 初始化登录信息
 		initUserInfo() {
+      // eslint-disable-next-line no-console
+      console.log("初始化登录信息")
 			if (!Session.get('userInfo')) return false;
 			this.userInfo = Session.get('userInfo');
-			this.userInfo.time = formatDate(new Date(this.userInfo.time), 'YYYY-mm-dd HH:MM:SS');
 		},
 		// 消息通知当前项点击
 		onNewsInfoListClick(v) {
