@@ -15,13 +15,10 @@
 
 ```bash
 # 克隆项目
-git clone https://gitee.com/lyt-top/vue-next-admin.git
+git clone https://github.com/yzcheng90/x-springboot-ui.git
 
 # 进入项目
-cd vue-next-admin
-
-# 切换分支
-git checkout vue-prev-admin
+cd x-springboot-ui
 
 # 安装依赖
 cnpm install
@@ -42,5 +39,5 @@ cnpm run build
 ```
 
 #### 📚 开发文档
-
+- 前台UI框架地址：https://gitee.com/lyt-top/vue-next-admin.git
 - 查看开发文档：<a href="https://lyt-top.gitee.io/vue-next-admin-doc-preview" target="_blank">vue-next-admin-doc</a>
