@@ -41,6 +41,13 @@ export function useMenuApi() {
 				method: 'get',
 				params
 			});
-		}
+		},
+		delete: (params) => {
+			return request({
+				url: '/sys/menu/delete',
+				method: 'post',
+				data: params
+			});
+		},
 	};
 }

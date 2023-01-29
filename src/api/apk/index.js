@@ -5,36 +5,36 @@ import request from '@/utils/request';
  *
  * @author czx
  * @email object_czx@163.com
- * @date 2023-01-22 17:15:11
+ * @date 2023-01-26 20:32:33
  */
 export function useApkApi() {
 	return {
 		list: (params) => {
 			return request({
-				url: '/sys/apk/list',
+				url: '/apk/version/list',
 				method: 'get',
 				params
 			});
 		},
 		add: (params) => {
 			return request({
-				url: '/sys/apk/save',
-		method: 'post',
-						data: params
+				url: '/apk/version/save',
+				method: 'post',
+				data: params
 			});
 		},
 		update: (params) => {
 			return request({
-				url: '/sys/apk/update',
-		method: 'post',
-						data: params
+				url: '/apk/version/update',
+				method: 'post',
+				data: params
 			});
 		},
 		delete: (params) => {
 			return request({
-				url: '/sys/apk/delete',
-		method: 'post',
-						data: params
+				url: '/apk/version/delete',
+				method: 'post',
+				data: params
 			});
 		}
 	};

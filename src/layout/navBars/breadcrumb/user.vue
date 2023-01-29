@@ -29,16 +29,6 @@
 		<div class="layout-navbars-breadcrumb-user-icon" @click="onLayoutSetingClick">
 			<i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>
 		</div>
-		<div class="layout-navbars-breadcrumb-user-icon">
-			<el-popover placement="bottom" trigger="click" v-model="isShowUserNewsPopover" :width="300" popper-class="el-popover-pupop-user-news">
-				<el-badge :is-dot="true" @click.stop="isShowUserNewsPopover = !isShowUserNewsPopover" slot="reference">
-					<i class="el-icon-bell" :title="$t('message.user.title4')"></i>
-				</el-badge>
-				<transition name="el-zoom-in-top">
-					<UserNews v-show="isShowUserNewsPopover" />
-				</transition>
-			</el-popover>
-		</div>
 		<div class="layout-navbars-breadcrumb-user-icon mr10" @click="onScreenfullClick">
 			<i
 				class="iconfont"
@@ -54,10 +44,6 @@
 			</span>
 			<el-dropdown-menu slot="dropdown">
 				<el-dropdown-item command="/home">{{ $t('message.user.dropdown1') }}</el-dropdown-item>
-				<el-dropdown-item command="wareHouse">{{ $t('message.user.dropdown6') }}</el-dropdown-item>
-				<el-dropdown-item command="/personal">{{ $t('message.user.dropdown2') }}</el-dropdown-item>
-				<el-dropdown-item command="/404">{{ $t('message.user.dropdown3') }}</el-dropdown-item>
-				<el-dropdown-item command="/401">{{ $t('message.user.dropdown4') }}</el-dropdown-item>
 				<el-dropdown-item divided command="logOut">{{ $t('message.user.dropdown5') }}</el-dropdown-item>
 			</el-dropdown-menu>
 		</el-dropdown>
@@ -68,14 +54,13 @@
 <script>
 import screenfull from 'screenfull';
 import { Session, Local } from '@/utils/storage.js';
-import UserNews from '@/layout/navBars/breadcrumb/userNews.vue';
 import Search from '@/layout/navBars/breadcrumb/search.vue';
 import { useLoginApi } from '@/api/login';
 import {Message} from "element-ui";
 
 export default {
 	name: 'layoutBreadcrumbUser',
-	components: { UserNews, Search },
+	components: { Search },
 	data() {
 		return {
 			isScreenfull: false,
@@ -200,8 +185,6 @@ export default {
         }).then(() => {
 
         }).catch(() => {});
-			} else if (path === 'wareHouse') {
-				window.open('https://github.com/yzcheng90/x-springboot');
 			} else {
 				this.$router.push(path);
 			}

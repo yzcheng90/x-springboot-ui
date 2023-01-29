@@ -59,7 +59,7 @@ service.interceptors.response.use(
 		} else if (error.message == 'Network Error') {
 			Message.error('网络连接错误');
 		} else {
-			Message.error(error.response.data.message);
+			Message.error(error.message);
 		}
 		return Promise.reject(error);
 	}

@@ -429,13 +429,12 @@ export default {
       this.state.dialog.isShowDialog = true;
     },
     onRowDel(row){
-      MessageBox.confirm(`此操作将永久删除账户名称：“${row.username}”，是否继续?`, '提示', {
+      MessageBox.confirm(`此操作将永久删除名称：“${row.title}”，是否继续?`, '提示', {
         confirmButtonText: '确认',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
-        this.fetchData()
-        Message.success('删除成功');
+        this.deleteInfo(row);
       }).catch(() => {});
     },
     onSelectIframeChange(){
@@ -463,7 +462,18 @@ export default {
     },
     onSubmit(){
 
-    }
+    },
+    deleteInfo(row) {
+      let param = {
+        menuId: row.menuId
+      };
+      useMenuApi().delete(param).then(response => {
+        Message.success('删除成功');
+        this.fetchData()
+      }).catch(() => {
+        this.fetchData()
+      })
+    },
   },
   computed: {
 

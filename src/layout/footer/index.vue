@@ -1,7 +1,7 @@
 <template>
 	<div class="layout-footer mt15">
 		<div class="layout-footer-warp">
-			<div>vue-prev-admin，Made by lyt with ❤️</div>
+			<div>任务管理平台 后台管理系统 ️</div>
 			<div class="mt5">{{ $t('message.login.copyright.one5') }}</div>
 		</div>
 	</div>

@@ -26,16 +26,16 @@
         </el-table-column>
       </el-table>
       <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          class="mt15"
-          :pager-count="5"
-          :page-sizes="[10, 20, 30]"
-          :current-page="state.tableData.param.current"
-          background
-          :page-size="state.tableData.param.limit"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="state.tableData.total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              class="mt15"
+              :pager-count="5"
+              :page-sizes="[10, 20, 30]"
+              :current-page="state.tableData.param.current"
+              background
+              :page-size="state.tableData.param.limit"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="state.tableData.total"
       >
       </el-pagination>
     </el-card>
@@ -89,9 +89,14 @@
                 <el-input v-model="state.ruleForm.filePath"></el-input>
               </el-form-item>
             </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
+              <el-form-item label="是否生成UI页面">
+                <el-switch v-model="state.ruleForm.genUi"></el-switch>
+              </el-form-item>
+            </el-col>
             <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="mb20">
               <el-form-item label="前台项目目录">
-                <el-input v-model="state.ruleForm.uiFilePath"></el-input>
+                <el-input :disabled="!state.ruleForm.genUi" v-model="state.ruleForm.uiFilePath"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
@@ -119,111 +124,112 @@
 </template>
 
 <script>
-import {useCodeGenApi} from '@/api/code';
+  import {useCodeGenApi} from '@/api/code';
 
-export default {
-  name: "user",
-  data() {
-    return {
-      state: {
-        roleListData: [],
-        tableData: {
-          data: [],
-          total: 0,
-          loading: false,
-          param: {
-            current: 1,
-            limit: 10,
-            keyword: '',
+  export default {
+    name: "user",
+    data() {
+      return {
+        state: {
+          roleListData: [],
+          tableData: {
+            data: [],
+            total: 0,
+            loading: false,
+            param: {
+              current: 1,
+              limit: 10,
+              keyword: '',
+            }
+          },
+          dialog: {
+            isShowDialog: false,
+            type: '',
+            title: '',
+            submitTxt: '',
+          },
+          ruleForm: {
+            tableName: "",
+            mainPath: "com.suke.czx",
+            packagePath: "com.suke.czx.modules",
+            filePath: "E:\\github\\X-SpringBoot",
+            uiFilePath: "E:\\github\\x-springboot-ui",
+            moduleName: "user",
+            requestMapping: "user",
+            author: "czx",
+            email: "object_czx@163.com",
+            useRestful: false,
+            useHump: true,
+            fileController: true,
+            fileServiceImpl: true,
+            fileMapper: true,
+            fileMapperXml: false,
+            fileEntity: true,
+            genUi: true
+          },
+          submitBtn: {
+            loading: false,
+            type:''
           }
-        },
-        dialog: {
-          isShowDialog: false,
-          type: '',
-          title: '',
-          submitTxt: '',
-        },
-        ruleForm: {
-          tableName: "",
-          mainPath: "com.suke.czx",
-          packagePath: "com.suke.czx.modules",
-          filePath: "D:\\github_project\\X-SpringBoot",
-          uiFilePath: "D:\\github_project\\x-springboot-ui",
-          moduleName: "user",
-          requestMapping: "user",
-          author: "czx",
-          email: "object_czx@163.com",
-          useRestful: false,
-          useHump: true,
-          fileController: true,
-          fileServiceImpl: true,
-          fileMapper: true,
-          fileMapperXml: false,
-          fileEntity: true
-        },
-        submitBtn: {
-          loading: false,
-          type:''
         }
       }
-    }
-  },
-  methods: {
-    fetchData() {
-      this.state.tableData.loading = true
-      useCodeGenApi().list(this.state.tableData.param).then(response => {
-        this.state.tableData.data = response.data.records
-        this.state.tableData.total = response.data.total
-        this.state.tableData.loading = false
-      })
     },
-    onOpenAddOrEdit(type, row) {
-      console.log(row)
-      this.state.ruleForm.tableName = row.tableName;
-      this.state.dialog.title = '生成配置';
-      this.state.dialog.submitTxt = '配 置';
-      this.state.dialog.isShowDialog = true;
-    },
-    onSubmit() {
-      if(!this.state.ruleForm.tableName){
-        this.$message('先选择表再操作');
-        return;
-      }
-      this.state.submitBtn.loading = true;
-      useCodeGenApi().create(this.state.ruleForm).then(response => {
-        this.$message('代码生成成功！');
-        this.state.submitBtn.loading = false;
-        this.closeDialog();
+    methods: {
+      fetchData() {
+        this.state.tableData.loading = true
+        useCodeGenApi().list(this.state.tableData.param).then(response => {
+          this.state.tableData.data = response.data.records
+          this.state.tableData.total = response.data.total
+          this.state.tableData.loading = false
+        })
+      },
+      onOpenAddOrEdit(type, row) {
+        console.log(row)
+        this.state.ruleForm.tableName = row.tableName;
+        this.state.dialog.title = '生成配置';
+        this.state.dialog.submitTxt = '配 置';
+        this.state.dialog.isShowDialog = true;
+      },
+      onSubmit() {
+        if(!this.state.ruleForm.tableName){
+          this.$message('先选择表再操作');
+          return;
+        }
+        this.state.submitBtn.loading = true;
+        useCodeGenApi().create(this.state.ruleForm).then(response => {
+          this.$message('代码生成成功！');
+          this.state.submitBtn.loading = false;
+          this.closeDialog();
+          this.fetchData()
+        }).catch(() => {
+          this.state.submitBtn.loading = false
+        })
+      },
+      handleSizeChange(pageSize) {
+        this.state.tableData.data = []
+        this.state.tableData.param.limit = pageSize
         this.fetchData()
-      }).catch(() => {
-        this.state.submitBtn.loading = false
-      })
+      },
+      handleCurrentChange(current) {
+        this.state.tableData.data = []
+        this.state.tableData.param.current = current
+        this.fetchData()
+      },
+      closeDialog() {
+        this.state.dialog.isShowDialog = false;
+      },
+      onCancel() {
+        this.closeDialog();
+      }
     },
-    handleSizeChange(pageSize) {
-      this.state.tableData.data = []
-      this.state.tableData.param.limit = pageSize
-      this.fetchData()
-    },
-    handleCurrentChange(current) {
-      this.state.tableData.data = []
-      this.state.tableData.param.current = current
-      this.fetchData()
-    },
-    closeDialog() {
-      this.state.dialog.isShowDialog = false;
-    },
-    onCancel() {
-      this.closeDialog();
-    }
-  },
-  computed: {},
-  created() {
+    computed: {},
+    created() {
 
-  },
-  mounted() {
-    this.fetchData()
+    },
+    mounted() {
+      this.fetchData()
+    }
   }
-}
 </script>
 
 <style scoped>

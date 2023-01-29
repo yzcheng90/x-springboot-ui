@@ -19,7 +19,7 @@
 								<el-col :span="24">
 									<el-col :xs="12" :sm="12" :md="8" class="right-l-v">
 										<div class="right-label">昵称：</div>
-										<div class="right-value">小柒</div>
+										<div class="right-value">{{userInfo.name}}</div>
 									</el-col>
 									<el-col :xs="12" :sm="12" :md="16" class="right-l-v">
 										<div class="right-label">身份：</div>
@@ -29,7 +29,7 @@
 								<el-col :span="24" class="mt5">
 									<el-col :xs="12" :sm="12" :md="8" class="right-l-v">
 										<div class="right-label one-text-overflow">IP：</div>
-										<div class="right-value one-text-overflow">192.168.1.1</div>
+										<div class="right-value one-text-overflow">{{userInfo.loginIp}}</div>
 									</el-col>
 									<el-col :xs="12" :sm="12" :md="16" class="right-l-v">
 										<div class="right-label one-text-overflow">时间：</div>
@@ -69,7 +69,7 @@
 		<el-card shadow="hover">
 			<div slot="header">
 				<span>{{ $t('message.card.title4') }}</span>
-				<el-button class="home-card-more" type="text" @click="onOpenGitee">{{ $t('message.card.title5') }}</el-button>
+				<el-button class="home-card-more" type="text" @click="onOpenGithub">{{ $t('message.card.title5') }}</el-button>
 			</div>
 			<el-row :gutter="15" class="home-recommend-row">
 				<el-col :sm="24" :md="12" :lg="6" :xl="6" v-for="(v, k) in recommendList" :key="k">
@@ -371,9 +371,9 @@ export default {
 		onNewsInfoListClick(v) {
 			window.open(v.link);
 		},
-		// 跳转到 gitee
-		onOpenGitee() {
-			window.open('https://gitee.com/lyt-top/vue-next-admin');
+		// 跳转到 github
+		onOpenGithub() {
+			window.open('https://github.com/yzcheng90/x-springboot-ui');
 		},
 	},
 	watch: {
