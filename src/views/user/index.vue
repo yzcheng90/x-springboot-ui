@@ -177,7 +177,6 @@
                 if (type === 'edit') {
                     this.state.submitBtn.type = 'edit';
                     this.state.ruleForm = row;
-                    this.state.ruleForm.userStatus = row.status === 1 ? true : false;
                     this.state.dialog.title = '修改用户';
                     this.state.dialog.submitTxt = '修 改';
                 } else {
