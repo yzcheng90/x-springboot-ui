@@ -38,6 +38,36 @@ cnpm run dev
 cnpm run build
 ```
 
+#### 部署说明
+
+nginx 配置
+```yaml
+    server {
+        listen 80;
+        server_name localhost;
+        client_max_body_size    100m; 
+  
+        location / {
+            # UI目录
+            root  i:/ui;
+            #动态页面
+            proxy_set_header X-forwarded-for $proxy_add_x_forwarded_for;
+            proxy_set_header X-Real-IP $remote_addr;
+            if ( !-e $request_filename ){
+                proxy_pass    http://127.0.0.1:8080;
+            }
+        }
+
+        location ^~// {
+            proxy_set_header X-forwarded-for $proxy_add_x_forwarded_for;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_pass    http://127.0.0.1:8080;
+        }
+    }
+```
+访问：http://localhost
+
+
 #### 📚 开发文档
 - 前台UI框架地址：https://gitee.com/lyt-top/vue-next-admin.git
 - 查看开发文档：<a href="https://lyt-top.gitee.io/vue-next-admin-doc-preview" target="_blank">vue-next-admin-doc</a>
