@@ -42,6 +42,20 @@ export function useMenuApi() {
 				params
 			});
 		},
+		save: (params) => {
+			return request({
+				url: '/sys/menu/save',
+				method: 'post',
+				data: params
+			});
+		},
+		update: (params) => {
+			return request({
+				url: '/sys/menu/update',
+				method: 'post',
+				data: params
+			});
+		},
 		delete: (params) => {
 			return request({
 				url: '/sys/menu/delete',

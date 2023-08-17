@@ -98,13 +98,13 @@
                                         width="450"
                                         trigger="click"
                                         @show="popoverShow">
-                  <span slot="reference">
-                    <el-input suffix-icon='data-icon' v-model="state.ruleForm.meta.icon" placeholder='请输入菜单图标'>
-                       <template slot="append">
-                         <i :class="state.ruleForm.meta.icon"/>
-                       </template>
-                    </el-input>
-                  </span>
+                                      <span slot="reference">
+                                        <el-input suffix-icon='data-icon' v-model="state.ruleForm.meta.icon" placeholder='请输入菜单图标'>
+                                           <template slot="append">
+                                             <i :class="state.ruleForm.meta.icon"/>
+                                           </template>
+                                        </el-input>
+                                      </span>
                                     <div class="iconList">
                                         <el-tabs v-model="activeName">
                                             <el-tab-pane
@@ -140,7 +140,7 @@
                     </template>
                     <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
                         <el-form-item label="菜单排序">
-                            <el-input-number v-model="state.ruleForm.menuSort" controls-position="right"
+                            <el-input-number v-model="state.ruleForm.orderSort" controls-position="right"
                                              placeholder="请输入排序" class="w100"/>
                         </el-form-item>
                     </el-col>
@@ -190,10 +190,10 @@
                 </el-row>
             </el-form>
             <template #footer>
-				<span class="dialog-footer">
-					<el-button @click="onCancel" size="default">取 消</el-button>
-					<el-button type="primary" @click="onSubmit" size="default">{{ state.dialog.submitTxt }}</el-button>
-				</span>
+                <span class="dialog-footer">
+                  <el-button @click="onCancel" size="default">取 消</el-button>
+                  <el-button type="primary" @click="onSubmit" :loading="state.submitBtn.loading" size="default">{{ state.dialog.submitTxt }}</el-button>
+                </span>
             </template>
         </el-dialog>
     </div>
@@ -225,12 +225,12 @@ export default {
                     submitTxt: '',
                 },
                 ruleForm: {
-                    menuPid: '', // 上级菜单
+                    parentId: '', // 上级菜单
                     menuType: 'menu', // 菜单类型
                     name: '', // 路由名称
                     component: '', // 组件路径
                     isLink: false, // 是否外链
-                    menuSort: 0, // 菜单排序
+                    orderSort: 0, // 菜单排序
                     path: '', // 路由路径
                     redirect: '', // 路由重定向，有子集 children 时
                     meta: {
@@ -245,7 +245,11 @@ export default {
                     }
                 },
                 menuData: [],
-                menuSelectData: []
+                menuSelectData: [],
+                submitBtn: {
+                    loading: false,
+                    type: ''
+                }
             },
             activeName: '0',
             iconList: [
@@ -371,7 +375,7 @@ export default {
         selectMenuChange(value) {
             console.log(value)
             this.menuSelectData = value
-            this.state.ruleForm.menuPid = value[value.length - 1];
+            this.state.ruleForm.parentId = value[value.length - 1];
         },
         popoverShow() {
             this.$nextTick(() => {
@@ -410,16 +414,16 @@ export default {
                 this.state.dialog.submitTxt = '修 改';
                 // 回显父级菜单
                 this.state.menuSelectData = [];
-                let menuIds = this.findMenuIds([], row.menuId, this.state.menuData);
-                console.log("3:", menuIds);
+                this.state.menuSelectData = this.findMenuIds(row.menuId, this.state.menuData);
+                // console.log("3:", menuIds);
             } else {
                 this.state.ruleForm = {
-                    menuPid: '', // 上级菜单
+                    parentId: '', // 上级菜单
                     menuType: 'menu', // 菜单类型
                     name: '', // 路由名称
                     component: '', // 组件路径
                     isLink: false, // 是否外链
-                    menuSort: 0, // 菜单排序
+                    orderSort: 0, // 菜单排序
                     path: '', // 路由路径
                     redirect: '', // 路由重定向，有子集 children 时
                     meta: {
@@ -436,23 +440,32 @@ export default {
                 this.state.dialog.title = '新增菜单';
                 this.state.dialog.submitTxt = '新 增';
             }
+            this.state.submitBtn.type = type;
             this.state.dialog.isShowDialog = true;
         },
-        findMenuIds(result, menuId, data) {
-            if(data){
-                for (let i = 0; i < data.length; i++) {
-                    const menu = data[i];
-                    if(menu){
-                        if (menu.menuId === menuId) {
-                            result.push(menu.menuId);
-                            break;
-                        } else if (menu.children && menu.children.length > 0) {
-                            this.findMenuIds(menuId, menu.children);
+        findMenuIds(menuId, arrData) {
+            let arr = [];
+            let returnArr = []; // 存放结果的数组
+            let depth = 0; // 定义全局层级
+            // 定义递归函数
+            function childrenEach(childrenData, depthN) {
+                for (let j = 0; j < childrenData.length; j++) {
+                    depth = depthN; // 将执行的层级赋值 到 全局层级
+                    arr[depthN] = childrenData[j].menuId;
+                    if (childrenData[j].menuId === menuId) {
+                        returnArr = arr.slice(0, depthN + 1); //将目前匹配的数组，截断并保存到结果数组，
+                        break;
+                    } else {
+                        if (childrenData[j].children) {
+                            depth++;
+                            childrenEach(childrenData[j].children, depth);
                         }
                     }
                 }
+                return returnArr;
             }
-            return result;
+
+            return childrenEach(arrData, depth);
         },
         onRowDel(row) {
             MessageBox.confirm(`此操作将永久删除名称：“${row.title}”，是否继续?`, '提示', {
@@ -488,7 +501,24 @@ export default {
             this.closeDialog();
         },
         onSubmit() {
-            console.log(this.state.ruleForm)
+            this.state.submitBtn.loading = true;
+            if (this.state.submitBtn.type === 'edit') {
+                useMenuApi().update(this.state.ruleForm).then(response => {
+                    this.state.submitBtn.loading = false;
+                    this.closeDialog();
+                    this.fetchData()
+                }).catch(() => {
+                    this.state.submitBtn.loading = false
+                })
+            } else {
+                useMenuApi().save(this.state.ruleForm).then(response => {
+                    this.state.submitBtn.loading = false;
+                    this.closeDialog();
+                    this.fetchData()
+                }).catch(() => {
+                    this.state.submitBtn.loading = false
+                })
+            }
         },
         deleteInfo(row) {
             let param = {
