@@ -13,9 +13,10 @@
       </div>
       <el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
         <el-table-column type="index" label="序号" width="60" align="center"/>
-        <el-table-column prop="tenancyName" label="渠道名称" show-overflow-tooltip align="center"></el-table-column>
-        <el-table-column prop="tenancyParentName" label="所属父级租户" align="center"></el-table-column>
-        <el-table-column prop="tenancyRemark" label="渠道备注" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="tenancyId" label="渠道/租户ID" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="tenancyName" label="渠道/租户名称" show-overflow-tooltip align="center"></el-table-column>
+        <el-table-column prop="tenancyParentName" label="所属父级" align="center"></el-table-column>
+        <el-table-column prop="tenancyRemark" label="渠道/租户备注" show-overflow-tooltip align="center"></el-table-column>
         <el-table-column label="操作" width="200" align="center">
           <template #default="scope">
             <el-button size="small" text type="primary" @click="onOpenAddOrEdit('edit', scope.row)">修改</el-button>
