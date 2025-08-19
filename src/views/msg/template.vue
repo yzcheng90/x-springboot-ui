@@ -171,6 +171,15 @@ export default {
         this.state.tableData.loading = false
       })
     },
+    updateInfo(row) {
+      useMsgTemplateApi().update(row).then(response => {
+        this.state.submitBtn.loading = false;
+        this.closeDialog();
+        this.fetchData()
+      }).catch(() => {
+        this.state.submitBtn.loading = false
+      })
+    },
     onOpenAddOrEdit(type, row) {
       if (type === 'edit') {
         this.state.submitBtn.type = 'edit';
